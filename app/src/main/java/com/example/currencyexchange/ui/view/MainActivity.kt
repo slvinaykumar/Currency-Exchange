@@ -80,12 +80,15 @@ class MainActivity : AppCompatActivity(), KodeinAware, AdapterView.OnItemSelecte
     private fun initRecyclerview(currencies: CurrencyResponse) {
 
         if (currencyAdapter == null) {
-            userInput = viewModel.userInput.value!!
-            currencyAdapter = CurrencyAdapter(currencies, userInput)
-            currency_recycler_view.apply {
-                layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
-                adapter = currencyAdapter
+            if(viewModel.userInput.value != null) {
+                userInput = viewModel.userInput.value!!
+                currencyAdapter = CurrencyAdapter(currencies, userInput)
+                currency_recycler_view.apply {
+                    layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+                    adapter = currencyAdapter
+                }
             }
+
         } else {
             currencyAdapter?.mCurrencies = currencies
             currencyAdapter?.mUserInput = viewModel.userInput.value!!
@@ -100,7 +103,7 @@ class MainActivity : AppCompatActivity(), KodeinAware, AdapterView.OnItemSelecte
 
         search_term.addTextChangedListener(object : TextChangedListener<EditText>(search_term) {
             override fun onTextChanged(target: EditText, s: Editable?) {
-                if (!s.isNullOrBlank() && !s.isNullOrEmpty()) {
+                if (!s.isNullOrBlank() && !s.isNullOrEmpty() && s.toString().matches("-?\\d+(\\.\\d+)?".toRegex())) {
                     try {
                         userInput = s.toString().toDouble()
                         viewModel.userInput.postValue(userInput)
