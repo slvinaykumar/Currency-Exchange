@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity(), KodeinAware, AdapterView.OnItemSelecte
             }
         } else {
             currencyAdapter?.mCurrencies = currencies
+            currencyAdapter?.mUserInput = viewModel.userInput.value!!
             currencyAdapter?.notifyDataSetChanged()
         }
     }
@@ -113,11 +114,9 @@ class MainActivity : AppCompatActivity(), KodeinAware, AdapterView.OnItemSelecte
         })
 
         search_button.setOnClickListener {
-
-            if (viewModel.userInput.value != null) {
                 viewModel.searchCurrency()
                 hideKeyBoard()
-            }
+
         }
     }
 
